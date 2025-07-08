@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viewer Time Badges</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #2c2f33;
+            font-family: 'Arial', sans-serif;
+            color: #ffffff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #7289da;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header p {
+            color: #b9bbbe;
+            font-size: 1.1em;
+        }
+        
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .badge-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #36393f;
+            padding: 20px;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .badge-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .badge-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin-bottom: 15px;
+        }
+        
+        .badge {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 30px rgba(114, 137, 218, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        .badge-1min { background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 50%, #ffa8a8 100%); }
+        .badge-1hour { background: linear-gradient(135deg, #7289da 0%, #5865f2 25%, #00d4aa 50%, #7289da 75%, #5865f2 100%); }
+        .badge-3hour { background: linear-gradient(135deg, #00d4aa 0%, #26d0ce 50%, #4ecdc4 100%); }
+        .badge-6hour { background: linear-gradient(135deg, #f39c12 0%, #f1c40f 50%, #f4d03f 100%); }
+        .badge-9hour { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 50%, #a93226 100%); }
+        .badge-24hour { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 50%, #7d3c98 100%); }
+        .badge-1week { background: linear-gradient(135deg, #2c3e50 0%, #34495e 25%, #5dade2 50%, #85c1e9 75%, #aed6f1 100%); }
+        
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            background: linear-gradient(135deg, #36393f 0%, #2c2f33 100%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .badge-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #ffffff;
+        }
+        
+        .badge-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #7289da, #00d4aa, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShine 3s ease-in-out infinite;
+        }
+        
+        .hourglass-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 8px;
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #7289da, #5865f2);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(114, 137, 218, 0.3);
+            font-size: 12px;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(114, 137, 218, 0.4);
+        }
+        
+        .download-all-btn {
+            background: linear-gradient(135deg, #00d4aa, #26d0ce);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
+            font-size: 16px;
+            margin: 20px auto;
+            display: block;
+        }
+        
+        .download-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 170, 0.4);
+        }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 0 20px rgba(114, 137, 218, 0.3); }
+            100% { box-shadow: 0 0 40px rgba(114, 137, 218, 0.7); }
+        }
+        
+        @keyframes textShine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Viewer Time Badges</h1>
+            <p>Professional badges for your tube site - Click to download individual badges</p>
+        </div>
+        
+        <div class="badges-grid">
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-1min">
+                        <div class="badge-content">
+                            <svg class="hourglass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 2h14" stroke="#ff6b6b"/>
+                                <path d="M5 22h14" stroke="#ff6b6b"/>
+                                <path d="M7 2v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2" fill="none" stroke="#ff6b6b"/>
+                                <path d="M7 22v-3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3" fill="none" stroke="#ff6b6b"/>
+                                <path d="M12 7v4" stroke="#ffa8a8"/>
+                                <path d="M12 17v-4" stroke="#ffa8a8"/>
+                                <path d="M8 7l4 4 4-4" fill="none" stroke="#ffa8a8"/>
+                                <path d="M8 17l4-4 4 4" fill="none" stroke="#ffa8a8"/>
+                            </svg>
+                            <div class="badge-title">1 MIN<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('1 MIN', 'VIEWER', '#ff6b6b', '#ffa8a8', '1-minute-viewer-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-1hour">
+                        <div class="badge-content">
+                            <svg class="hourglass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 2h14" stroke="#7289da"/>
+                                <path d="M5 22h14" stroke="#7289da"/>
+                                <path d="M7 2v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2" fill="none" stroke="#7289da"/>
+                                <path d="M7 22v-3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3" fill="none" stroke="#7289da"/>
+                                <path d="M12 7v4" stroke="#00d4aa"/>
+                                <path d="M12 17v-4" stroke="#00d4aa"/>
+                                <path d="M8 7l4 4 4-4" fill="none" stroke="#00d4aa"/>
+                                <path d="M8 17l4-4 4 4" fill="none" stroke="#00d4aa"/>
+                            </svg>
+                            <div class="badge-title">1H<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('1 HOUR', 'VIEWER', '#7289da', '#00d4aa', '1-hour-viewer-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-3hour">
+                        <div class="badge-content">
+                            <svg class="hourglass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 2h14" stroke="#00d4aa"/>
+                                <path d="M5 22h14" stroke="#00d4aa"/>
+                                <path d="M7 2v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2" fill="none" stroke="#00d4aa"/>
+                                <path d="M7 22v-3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3" fill="none" stroke="#00d4aa"/>
+                                <path d="M12 7v4" stroke="#4ecdc4"/>
+                                <path d="M12 17v-4" stroke="#4ecdc4"/>
+                                <path d="M8 7l4 4 4-4" fill="none" stroke="#4ecdc4"/>
+                                <path d="M8 17l4-4 4 4" fill="none" stroke="#4ecdc4"/>
+                            </svg>
+                            <div class="badge-title">3 HOURS<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('3 HOURS', 'VIEWER', '#00d4aa', '#4ecdc4', '3-hours-viewer-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-6hour">
+                        <div class="badge-content">
+                            <svg class="hourglass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 2h14" stroke="#f39c12"/>
+                                <path d="M5 22h14" stroke="#f39c12"/>
+                                <path d="M7 2v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2" fill="none" stroke="#f39c12"/>
+                                <path d="M7 22v-3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3" fill="none" stroke="#f39c12"/>
+                                <path d="M12 7v4" stroke="#f4d03f"/>
+                                <path d="M12 17v-4" stroke="#f4d03f"/>
+                                <path d="M8 7l4 4 4-4" fill="none" stroke="#f4d03f"/>
+                                <path d="M8 17l4-4 4 4" fill="none" stroke="#f4d03f"/>
+                            </svg>
+                            <div class="badge-title">6 HOURS<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('6 HOURS', 'VIEWER', '#f39c12', '#f4d03f', '6-hours-viewer-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-9hour">
+                        <div class="badge-content">
+                            <svg class="hourglass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 2h14" stroke="#e74c3c"/>
+                                <path d="M5 22h14" stroke="#e74c3c"/>
+                                <path d="M7 2v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2" fill="none" stroke="#e74c3c"/>
+                                <path d="M7 22v-3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3" fill="none" stroke="#e74c3c"/>
+                                <path d="M12 7v4" stroke="#a93226"/>
+                                <path d="M12 17v-4" stroke="#a93226"/>
+                                <path d="M8 7l4 4 4-4" fill="none" stroke="#a93226"/>
+                                <path d="M8 17l4-4 4 4" fill="none" stroke="#a93226"/>
+                            </svg>
+                            <div class="badge-title">9 HOURS<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('9 HOURS', 'VIEWER', '#e74c3c', '#a93226', '9-hours-viewer-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-24hour">
+                        <div class="badge-content">
+                            <svg class="hourglass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 2h14" stroke="#9b59b6"/>
+                                <path d="M5 22h14" stroke="#9b59b6"/>
+                                <path d="M7 2v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2" fill="none" stroke="#9b59b6"/>
+                                <path d="M7 22v-3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3" fill="none" stroke="#9b59b6"/>
+                                <path d="M12 7v4" stroke="#7d3c98"/>
+                                <path d="M12 17v-4" stroke="#7d3c98"/>
+                                <path d="M8 7l4 4 4-4" fill="none" stroke="#7d3c98"/>
+                                <path d="M8 17l4-4 4 4" fill="none" stroke="#7d3c98"/>
+                            </svg>
+                            <div class="badge-title">24 HOURS<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('24 HOURS', 'VIEWER', '#9b59b6', '#7d3c98', '24-hours-viewer-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-1week">
+                        <div class="badge-content">
+                            <svg class="hourglass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 2h14" stroke="#2c3e50"/>
+                                <path d="M5 22h14" stroke="#2c3e50"/>
+                                <path d="M7 2v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2" fill="none" stroke="#2c3e50"/>
+                                <path d="M7 22v-3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3" fill="none" stroke="#2c3e50"/>
+                                <path d="M12 7v4" stroke="#5dade2"/>
+                                <path d="M12 17v-4" stroke="#5dade2"/>
+                                <path d="M8 7l4 4 4-4" fill="none" stroke="#5dade2"/>
+                                <path d="M8 17l4-4 4 4" fill="none" stroke="#5dade2"/>
+                            </svg>
+                            <div class="badge-title">1 WEEK<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('1 WEEK', 'VIEWER', '#2c3e50', '#5dade2', '1-week-viewer-badge.png')">Download</button>
+            </div>
+            <div class="streak">🔥 10 days</div>
+        </div>
+        
+        <button class="download-all-btn" onclick="downloadAllBadges()">Download All Badges</button>
+    </div>
+
+    <script>
+        function downloadBadge(line1, line2, color1, color2, filename) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 200;
+            canvas.height = 200;
+            
+            // Create gradient based on badge type
+            const gradient = ctx.createLinearGradient(0, 0, 200, 200);
+            
+            // Set gradients for each badge type
+            if (filename.includes('1-minute')) {
+                gradient.addColorStop(0, '#ff6b6b');
+                gradient.addColorStop(0.5, '#ff8e8e');
+                gradient.addColorStop(1, '#ffa8a8');
+            } else if (filename.includes('1-hour')) {
+                gradient.addColorStop(0, '#7289da');
+                gradient.addColorStop(0.25, '#5865f2');
+                gradient.addColorStop(0.5, '#00d4aa');
+                gradient.addColorStop(0.75, '#7289da');
+                gradient.addColorStop(1, '#5865f2');
+            } else if (filename.includes('3-hours')) {
+                gradient.addColorStop(0, '#00d4aa');
+                gradient.addColorStop(0.5, '#26d0ce');
+                gradient.addColorStop(1, '#4ecdc4');
+            } else if (filename.includes('6-hours')) {
+                gradient.addColorStop(0, '#f39c12');
+                gradient.addColorStop(0.5, '#f1c40f');
+                gradient.addColorStop(1, '#f4d03f');
+            } else if (filename.includes('9-hours')) {
+                gradient.addColorStop(0, '#e74c3c');
+                gradient.addColorStop(0.5, '#c0392b');
+                gradient.addColorStop(1, '#a93226');
+            } else if (filename.includes('24-hours')) {
+                gradient.addColorStop(0, '#9b59b6');
+                gradient.addColorStop(0.5, '#8e44ad');
+                gradient.addColorStop(1, '#7d3c98');
+            } else if (filename.includes('1-week')) {
+                gradient.addColorStop(0, '#2c3e50');
+                gradient.addColorStop(0.25, '#34495e');
+                gradient.addColorStop(0.5, '#5dade2');
+                gradient.addColorStop(0.75, '#85c1e9');
+                gradient.addColorStop(1, '#aed6f1');
+            }
+            
+            // Draw outer circle
+            ctx.beginPath();
+            ctx.arc(100, 100, 100, 0, 2 * Math.PI);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // Draw inner circle
+            ctx.beginPath();
+            ctx.arc(100, 100, 92, 0, 2 * Math.PI);
+            ctx.fillStyle = '#36393f';
+            ctx.fill();
+            
+            // Add hourglass icon
+            ctx.strokeStyle = color1;
+            ctx.lineWidth = 2;
+            
+            // Top and bottom frames
+            ctx.beginPath();
+            ctx.moveTo(85, 70);
+            ctx.lineTo(115, 70);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(85, 95);
+            ctx.lineTo(115, 95);
+            ctx.stroke();
+            
+            // Top and bottom bulbs
+            ctx.beginPath();
+            ctx.moveTo(88, 70);
+            ctx.lineTo(88, 75);
+            ctx.lineTo(112, 75);
+            ctx.lineTo(112, 70);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(88, 95);
+            ctx.lineTo(88, 90);
+            ctx.lineTo(112, 90);
+            ctx.lineTo(112, 95);
+            ctx.stroke();
+            
+            // Sand flow
+            ctx.strokeStyle = color2;
+            ctx.beginPath();
+            ctx.moveTo(100, 76);
+            ctx.lineTo(100, 84);
+            ctx.stroke();
+            
+            // Sand triangles
+            ctx.beginPath();
+            ctx.moveTo(88, 76);
+            ctx.lineTo(100, 82);
+            ctx.lineTo(112, 76);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(88, 89);
+            ctx.lineTo(100, 83);
+            ctx.lineTo(112, 89);
+            ctx.stroke();
+            
+            // Add text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(line1, 100, 105);
+            ctx.fillText(line2, 100, 125);
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function downloadAllBadges() {
+            const badges = [
+                ['1 MIN', 'VIEWER', '#ff6b6b', '#ffa8a8', '1-minute-viewer-badge.png'],
+                ['1 HOUR', 'VIEWER', '#7289da', '#00d4aa', '1-hour-viewer-badge.png'],
+                ['3 HOURS', 'VIEWER', '#00d4aa', '#4ecdc4', '3-hours-viewer-badge.png'],
+                ['6 HOURS', 'VIEWER', '#f39c12', '#f4d03f', '6-hours-viewer-badge.png'],
+                ['9 HOURS', 'VIEWER', '#e74c3c', '#a93226', '9-hours-viewer-badge.png'],
+                ['24 HOURS', 'VIEWER', '#9b59b6', '#7d3c98', '24-hours-viewer-badge.png'],
+                ['1 WEEK', 'VIEWER', '#2c3e50', '#5dade2', '1-week-viewer-badge.png']
+            ];
+            
+            badges.forEach((badge, index) => {
+                setTimeout(() => {
+                    downloadBadge(badge[0], badge[1], badge[2], badge[3], badge[4]);
+                }, index * 300);
+            });
+        }
+    </script>
+</body>
+</html>

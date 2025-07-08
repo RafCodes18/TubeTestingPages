@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Viewer Badges</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: radial-gradient(circle at center, #0a0a0a 0%, #000000 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00ffff, #0080ff, #8000ff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+        
+        .header p {
+            color: #00ccff;
+            font-size: 1.2em;
+            opacity: 0.9;
+            animation: subtitlePulse 2s ease-in-out infinite alternate;
+        }
+        
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .badge-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(20, 20, 30, 0.8);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .badge-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            animation: rotate 4s linear infinite;
+            z-index: 0;
+        }
+        
+        .badge-item:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.3);
+        }
+        
+        .badge-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+            z-index: 1;
+        }
+        
+        .badge {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: badgeRotate 8s linear infinite;
+        }
+        
+        /* Progressive badge styles - getting cooler with higher times */
+        .badge-1min { 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            box-shadow: 0 0 20px rgba(15, 52, 96, 0.5);
+        }
+        
+        .badge-1hour { 
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 25%, #1a1a2e 50%, #16213e 75%, #0f3460 100%);
+            box-shadow: 0 0 30px rgba(15, 52, 96, 0.7);
+        }
+        
+        .badge-3hour { 
+            background: linear-gradient(135deg, #0f3460 0%, #0b2447 25%, #19376d 50%, #0f3460 100%);
+            box-shadow: 0 0 35px rgba(25, 55, 109, 0.8);
+        }
+        
+        .badge-6hour { 
+            background: linear-gradient(135deg, #19376d 0%, #0b2447 25%, #041e42 50%, #19376d 100%);
+            box-shadow: 0 0 40px rgba(25, 55, 109, 0.9);
+        }
+        
+        .badge-9hour { 
+            background: linear-gradient(135deg, #041e42 0%, #0b2447 25%, #1a1a2e 50%, #041e42 100%);
+            box-shadow: 0 0 45px rgba(4, 30, 66, 1);
+        }
+        
+        .badge-24hour { 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 20%, #0f3460 40%, #19376d 60%, #041e42 80%, #1a1a2e 100%);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.6);
+            animation: badgeRotate 8s linear infinite, elitePulse 2s ease-in-out infinite alternate;
+        }
+        
+        .badge-1week { 
+            background: linear-gradient(135deg, #000428 0%, #004e92 25%, #009ffd 50%, #004e92 75%, #000428 100%);
+            box-shadow: 0 0 60px rgba(0, 159, 253, 0.8);
+            animation: badgeRotate 8s linear infinite, ultimatePulse 1.5s ease-in-out infinite alternate;
+        }
+        
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            background: radial-gradient(circle at center, #0a0a0a 0%, #000000 100%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .badge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+            animation: shimmer 3s linear infinite;
+            z-index: 0;
+        }
+        
+        .badge-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #ffffff;
+        }
+        
+        .badge-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            background: linear-gradient(45deg, #00ffff, #0080ff, #8000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+        
+        .hologram-icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.8));
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+        
+        /* Enhanced icons for higher tier badges */
+        .badge-24hour .hologram-icon {
+            animation: iconFloat 3s ease-in-out infinite, eliteGlow 2s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 255, 1));
+        }
+        
+        .badge-1week .hologram-icon {
+            animation: iconFloat 3s ease-in-out infinite, ultimateGlow 1.5s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 20px rgba(0, 159, 253, 1));
+        }
+        
+        .download-btn {
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            color: #000;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+            background: linear-gradient(45deg, #0080ff, #8000ff);
+        }
+        
+        .download-all-btn {
+            background: linear-gradient(45deg, #8000ff, #ff00ff, #00ffff);
+            color: #000;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 30px auto;
+            display: block;
+            animation: masterButtonPulse 3s ease-in-out infinite alternate;
+        }
+        
+        .download-all-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 50px rgba(255, 0, 255, 0.8);
+        }
+        
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 30px rgba(0, 255, 255, 0.5); }
+            100% { text-shadow: 0 0 50px rgba(255, 0, 255, 0.8); }
+        }
+        
+        @keyframes subtitlePulse {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+ 
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.8); }
+            100% { text-shadow: 0 0 20px rgba(0, 255, 255, 1); }
+        }
+        
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        @keyframes elitePulse {
+            0% { box-shadow: 0 0 50px rgba(0, 255, 255, 0.6); }
+            100% { box-shadow: 0 0 70px rgba(0, 255, 255, 1); }
+        }
+        
+        @keyframes ultimatePulse {
+            0% { box-shadow: 0 0 60px rgba(0, 159, 253, 0.8); }
+            100% { box-shadow: 0 0 90px rgba(0, 159, 253, 1); }
+        }
+        
+        @keyframes eliteGlow {
+            0% { filter: drop-shadow(0 0 15px rgba(0, 255, 255, 1)); }
+            100% { filter: drop-shadow(0 0 25px rgba(0, 255, 255, 1)); }
+        }
+        
+        @keyframes ultimateGlow {
+            0% { filter: drop-shadow(0 0 20px rgba(0, 159, 253, 1)); }
+            100% { filter: drop-shadow(0 0 35px rgba(0, 159, 253, 1)); }
+        }
+        
+        @keyframes masterButtonPulse {
+            0% { box-shadow: 0 0 30px rgba(255, 0, 255, 0.5); }
+            100% { box-shadow: 0 0 50px rgba(255, 0, 255, 0.8); }
+        }
+        
+        /* Particle effects for higher tier badges */
+        .badge-24hour::before {
+            background: radial-gradient(circle at center, #0a0a0a 0%, #000428 100%);
+        }
+        
+        .badge-1week::before {
+            background: radial-gradient(circle at center, #000428 0%, #004e92 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>FUTURISTIC VIEWER BADGES</h1>
+            <p>Next-Gen Recognition System - Progressive Prestige Design</p>
+        </div>
+        
+        <div class="badges-grid">
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-1min">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" stroke="#00ccff" stroke-width="1.5"/>
+                                <path d="M12 6v6l4 2" stroke="#00ffff" stroke-width="2"/>
+                            </svg>
+                            <div class="badge-title">1 MIN<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('1 MIN', 'VIEWER', 'basic', '1-minute-viewer-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-1hour">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 2h14" stroke="#00ccff"/>
+                                <path d="M5 22h14" stroke="#00ccff"/>
+                                <path d="M7 2v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2" stroke="#00ccff"/>
+                                <path d="M7 22v-3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3" stroke="#00ccff"/>
+                                <path d="M12 7v4" stroke="#00ffff"/>
+                                <path d="M12 17v-4" stroke="#00ffff"/>
+                                <path d="M8 7l4 4 4-4" stroke="#00ffff"/>
+                                <path d="M8 17l4-4 4 4" stroke="#00ffff"/>
+                            </svg>
+                            <div class="badge-title">1 HOUR<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('1 HOUR', 'VIEWER', 'bronze', '1-hour-viewer-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-3hour">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2" stroke="#00ccff"/>
+                                <path d="M12 8v8" stroke="#00ffff"/>
+                                <path d="M8 12h8" stroke="#00ffff"/>
+                            </svg>
+                            <div class="badge-title">3 HOURS<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('3 HOURS', 'VIEWER', 'silver', '3-hours-viewer-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-6hour">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" stroke="#00ccff"/>
+                                <path d="M9 12l2 2 4-4" stroke="#00ffff"/>
+                            </svg>
+                            <div class="badge-title">6 HOURS<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('6 HOURS', 'VIEWER', 'gold', '6-hours-viewer-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-9hour">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#00ccff"/>
+                                <circle cx="12" cy="12" r="3" stroke="#00ffff"/>
+                            </svg>
+                            <div class="badge-title">9 HOURS<br>VIEWER</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('9 HOURS', 'VIEWER', 'platinum', '9-hours-viewer-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-24hour">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#00ccff"/>
+                                <circle cx="12" cy="12" r="3" stroke="#00ffff"/>
+                                <path d="M9 12l2 2 4-4" stroke="#8000ff"/>
+                            </svg>
+                            <div class="badge-title">24 HOURS<br>ELITE</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('24 HOURS', 'ELITE', 'elite', '24-hours-elite-badge.png')">Download</button>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                    <div class="badge badge-1week">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L22 8.5v7L12 22 2 15.5v-7L12 2z" stroke="#009ffd"/>
+                                <path d="M12 2v20" stroke="#00ffff"/>
+                                <path d="M22 8.5l-10 5.5L2 8.5" stroke="#00ffff"/>
+                                <circle cx="12" cy="12" r="2" stroke="#8000ff"/>
+                            </svg>
+                            <div class="badge-title">1 WEEK<br>LEGEND</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadBadge('1 WEEK', 'LEGEND', 'legend', '1-week-legend-badge.png')">Download</button>
+            </div>
+        </div>
+        
+        <button class="download-all-btn" onclick="downloadAllBadges()">DOWNLOAD ALL BADGES</button>
+    </div>
+
+    <script>
+        function getGradientColors(tier) {
+            const gradients = {
+                basic: ['#1a1a2e', '#16213e', '#0f3460'],
+                bronze: ['#0f3460', '#16213e', '#1a1a2e', '#16213e', '#0f3460'],
+                silver: ['#0f3460', '#0b2447', '#19376d', '#0f3460'],
+                gold: ['#19376d', '#0b2447', '#041e42', '#19376d'],
+                platinum: ['#041e42', '#0b2447', '#1a1a2e', '#041e42'],
+                elite: ['#1a1a2e', '#16213e', '#0f3460', '#19376d', '#041e42', '#1a1a2e'],
+                legend: ['#000428', '#004e92', '#009ffd', '#004e92', '#000428']
+            };
+            return gradients[tier] || gradients.basic;
+        }
+        
+        function downloadBadge(line1, line2, tier, filename) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 200;
+            canvas.height = 200;
+            
+            const colors = getGradientColors(tier);
+            const gradient = ctx.createLinearGradient(0, 0, 200, 200);
+            
+            colors.forEach((color, index) => {
+                gradient.addColorStop(index / (colors.length - 1), color);
+            });
+            
+            // Draw outer circle with gradient
+            ctx.beginPath();
+            ctx.arc(100, 100, 100, 0, 2 * Math.PI);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // Draw inner circle
+            ctx.beginPath();
+            ctx.arc(100, 100, 94, 0, 2 * Math.PI);
+            const innerGradient = ctx.createRadialGradient(100, 100, 0, 100, 100, 94);
+            innerGradient.addColorStop(0, '#0a0a0a');
+            innerGradient.addColorStop(1, '#000000');
+            ctx.fillStyle = innerGradient;
+            ctx.fill();
+            
+            // Add futuristic icon based on tier
+            ctx.strokeStyle = tier === 'legend' ? '#009ffd' : '#00ccff';
+            ctx.lineWidth = 2;
+            
+            if (tier === 'basic') {
+                // Simple clock
+                ctx.beginPath();
+                ctx.arc(100, 80, 15, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(100, 80);
+                ctx.lineTo(110, 75);
+                ctx.stroke();
+            } else if (tier === 'bronze') {
+                // Hourglass
+                ctx.beginPath();
+                ctx.moveTo(85, 70);
+                ctx.lineTo(115, 70);
+                ctx.moveTo(85, 90);
+                ctx.lineTo(115, 90);
+                ctx.stroke();
+                ctx.strokeStyle = '#00ffff';
+                ctx.beginPath();
+                ctx.moveTo(88, 70);
+                ctx.lineTo(100, 80);
+                ctx.lineTo(112, 70);
+                ctx.moveTo(88, 90);
+                ctx.lineTo(100, 80);
+                ctx.lineTo(112, 90);
+                ctx.stroke();
+            } else if (tier === 'silver') {
+                // Hexagon
+                ctx.beginPath();
+                ctx.moveTo(115, 75);
+                ctx.lineTo(110, 85);
+                ctx.lineTo(90, 85);
+                ctx.lineTo(85, 75);
+                ctx.lineTo(90, 65);
+                ctx.lineTo(110, 65);
+                ctx.closePath();
+                ctx.stroke();
+                ctx.strokeStyle = '#00ffff';
+                ctx.beginPath();
+                ctx.moveTo(100, 70);
+                ctx.lineTo(100, 80);
+                ctx.moveTo(95, 75);
+                ctx.lineTo(105, 75);
+                ctx.stroke();
+            } else if (tier === 'gold') {
+                // Shield
+                ctx.beginPath();
+                ctx.moveTo(100, 65);
+                ctx.lineTo(85, 70);
+                ctx.lineTo(85, 80);
+                ctx.quadraticCurveTo(85, 90, 100, 90);
+                ctx.quadraticCurveTo(115, 90, 115, 80);
+                ctx.lineTo(115, 70);
+                ctx.closePath();
+                ctx.stroke();
+                ctx.strokeStyle = '#00ffff';
+                ctx.beginPath();
+                ctx.moveTo(95, 78);
+                ctx.lineTo(98, 82);
+                ctx.lineTo(105, 75);
+                ctx.stroke();
+            } else if (tier === 'platinum') {
+                // Star
+                ctx.beginPath();
+                ctx.moveTo(100, 65);
+                ctx.lineTo(103, 73);
+                ctx.lineTo(112, 73);
+                ctx.lineTo(106, 78);
+                ctx.lineTo(108, 87);
+                ctx.lineTo(100, 82);
+                ctx.lineTo(92, 87);
+                ctx.lineTo(94, 78);
+                ctx.lineTo(88, 73);
+                ctx.lineTo(97, 73);
+                ctx.closePath();
+                ctx.stroke();
+                ctx.strokeStyle = '#00ffff';
+                ctx.beginPath();
+                ctx.arc(100, 76, 4, 0, 2 * Math.PI);
+                ctx.stroke();
+            } else if (tier === 'elite') {
+                // Elite star with checkmark
+                ctx.beginPath();
+                ctx.moveTo(100, 65);
+                ctx.lineTo(103, 73);
+                ctx.lineTo(112, 73);
+                ctx.lineTo(106, 78);
+                ctx.lineTo(108, 87);
+                ctx.lineTo(100, 82);
+                ctx.lineTo(92, 87);
+                ctx.lineTo(94, 78);
+                ctx.lineTo(88, 73);
+                ctx.lineTo(97, 73);
+                ctx.closePath();
+                ctx.stroke();
+                ctx.strokeStyle = '#00ffff';
+                ctx.beginPath();
+                ctx.arc(100, 76, 4, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.strokeStyle = '#8000ff';
+                ctx.beginPath();
+                ctx.moveTo(97, 76);
+                ctx.lineTo(99, 78);
+                ctx.lineTo(103, 74);
+                ctx.stroke();
+            } else if (tier === 'legend') {
+                // 3D Crystal
+                ctx.strokeStyle = '#009ffd';
+                ctx.beginPath();
+                ctx.moveTo(100, 65);
+                ctx.lineTo(115, 75);
+                ctx.lineTo(115, 85);
+                ctx.lineTo(100, 90);
+                ctx.lineTo(85, 85);
+                ctx.lineTo(85, 75);
+                ctx.closePath();
+                ctx.stroke();
+                ctx.strokeStyle = '#00ffff';
+                ctx.beginPath();
+                ctx.moveTo(100, 65);
+                ctx.lineTo(100, 90);
+                ctx.moveTo(115, 75);
+                ctx.lineTo(85, 85);
+                ctx.moveTo(85, 75);
+                ctx.lineTo(115, 85);
+                ctx.stroke();
+                ctx.strokeStyle = '#8000ff';
+                ctx.beginPath();
+                ctx.arc(100, 77, 2, 0, 2 * Math.PI);
+                ctx.stroke();
+            }
+            
+            // Add text with futuristic styling
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Add glow effect to text
+            ctx.shadowColor = '#00ffff';
+            ctx.shadowBlur = 5;
+            
+            ctx.fillText(line1, 100, 108);
+            ctx.fillText(line2, 100, 125);
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+  
