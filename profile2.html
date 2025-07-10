@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - TubeStream</title>
+    <style>
+        :root {
+            --text-color: #000;
+            --background-color: #000;
+            --primary-color: #7fff00;
+            --primary-color-hover: rgba(191, 255, 0, .7);
+            --primary-color-card-hover: rgba(291, 255, 200, .1);
+            --secondary-color: #262727;
+            --accent-color: #97a7b3;
+            --primary-color-dark: rgba(24, 30, 0, 1);
+            --join-now-hover: #6bdd00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background-color);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .profile-header {
+            background: var(--secondary-color);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 24px;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-color), var(--join-now-hover), var(--primary-color), var(--accent-color));
+            border-radius: 24px;
+            z-index: -1;
+            opacity: 0.3;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--join-now-hover) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--background-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-color), var(--join-now-hover), var(--primary-color), var(--accent-color));
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .user-details h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--join-now-hover) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-meta {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--accent-color);
+        }
+
+        .meta-label {
+            color: var(--accent-color);
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .tier-premium {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--join-now-hover) 100%);
+            color: var(--background-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .tier-premium .meta-label {
+            color: var(--primary-color-dark);
+        }
+
+        .tier-premium .meta-value {
+            color: var(--background-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat-card {
+            background: var(--secondary-color);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--accent-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            background: var(--primary-color-card-hover);
+            border-color: var(--primary-color);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--join-now-hover));
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .content-section {
+            background: var(--secondary-color);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--join-now-hover) 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--background-color);
+            font-size: 12px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid var(--accent-color);
+        }
+
+        .badge:hover {
+            transform: scale(1.05);
+            background: var(--primary-color-card-hover);
+            border-color: var(--primary-color);
+        }
+
+        .badge-icon {
+            font-size: 24px;
+         }
+
+        .badge-name {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+        }
+
+        .badge-earned {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--join-now-hover) 100%);
+            color: var(--background-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .badge-earned .badge-name {
+            color: var(--primary-color-dark);
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            background: var(--primary-color-card-hover);
+            transform: translateX(5px);
+            border-color: var(--primary-color);
+        }
+
+        .history-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .history-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--accent-color);
+            font-size: 0.8rem;
+        }
+
+        .task-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--background-color);
+            font-size: 12px;
+        }
+
+        .task-text {
+            flex: 1;
+            color: #ffffff;
+        }
+
+        .task-reward {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .streak-display {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--join-now-hover) 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .streak-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--background-color);
+            margin-bottom: 8px;
+        }
+
+        .streak-label {
+            color: var(--primary-color-dark);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .profile-header {
+                padding: 20px;
+            }
+
+            .profile-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 16px;
+            }
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 40px;
+            }
+
+            .user-details h1 {
+                font-size: 2rem;
+            }
+
+            .user-meta {
+                justify-content: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .streak-number {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .badge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+
+
+
+
+
+
+
+         .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+          }
+        
+        .badge-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transform: scale(.4rem);
+          
+        }
+        
+        .badge-container {
+            position: relative;
+            
+            margin-bottom: 20px;
+        }
+        
+        .badge {
+            width: 130px;
+            height: 130px;
+            /* border-radius: 50%; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .watch-time-label {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+            z-index: 3;
+            color: #00ffff;
+        }
+        
+        /* 1 Minute Badge - Basic */
+        .badge-1min { 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            box-shadow: 0 0 20px rgba(15, 52, 96, 0.4);
+        }
+        
+        /* 3 Hour Badge - Bronze tier with warmer tones */
+        .badge-3hour { 
+            background: linear-gradient(135deg, #2d1b0e 0%, #3a2317 25%, #4a2d1a 50%, #5c3a20 75%, #6b4423 100%);
+            box-shadow: 0 0 35px rgba(139, 69, 19, 0.8);
+            animation: bronzeGlow 3s ease-in-out infinite alternate;
+        }
+        
+        .badge-3hour .watch-time-label {
+            color: #ffd700;
+            text-shadow: 0 0 12px rgba(255, 215, 0, 0.9);
+        }
+        
+        /* 6 Hour Badge - Silver tier with cooler silver tones */
+        .badge-6hour { 
+            background: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 20%, #4a4a4a 40%, #5a5a5a 60%, #6a6a6a 80%, #7a7a7a 100%);
+            box-shadow: 0 0 45px rgba(192, 192, 192, 0.8);
+            animation: silverPulse 2.5s ease-in-out infinite alternate;
+        }
+        
+        .badge-6hour .watch-time-label {
+            color: #e6e6e6;
+            text-shadow: 0 0 12px rgba(230, 230, 230, 0.9);
+        }
+        
+        .badge-6hour::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, transparent, rgba(192, 192, 192, 0.3), transparent);
+            animation: silverShimmer 4s linear infinite;
+        }
+        
+        /* 9 Hour Badge - Gold tier */
+        .badge-9hour { 
+            background: linear-gradient(135deg, #2d3748 0%, #1a365d 15%, #2c5282 30%, #3182ce 45%, #2c5282 60%, #1a365d 75%, #2d3748 90%, #19376d 100%);
+            box-shadow: 0 0 50px rgba(49, 130, 206, 0.8);
+            animation: goldRadiance 2s ease-in-out infinite alternate;
+        }
+        
+        .badge-9hour::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent, rgba(49, 130, 206, 0.4), transparent, rgba(49, 130, 206, 0.2), transparent);
+            animation: goldSpin 6s linear infinite;
+        }
+        
+        /* 24 Hour Badge - Platinum tier */
+        .badge-24hour { 
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 10%, #3182ce 20%, #4299e1 30%, #63b3ed 40%, #4299e1 50%, #3182ce 60%, #2c5282 70%, #1a365d 80%, #2d3748 90%, #1a365d 100%);
+            box-shadow: 0 0 60px rgba(66, 153, 225, 0.9), 0 0 100px rgba(99, 179, 237, 0.5);
+            animation: platinumAura 1.8s ease-in-out infinite alternate;
+        }
+        
+        .badge-24hour::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, rgba(66, 153, 225, 0.6), rgba(99, 179, 237, 0.3), rgba(66, 153, 225, 0.6), rgba(99, 179, 237, 0.8), rgba(66, 153, 225, 0.6));
+            animation: platinumWhirl 4s linear infinite;
+        }
+        
+        .badge-24hour::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, transparent, rgba(99, 179, 237, 0.4), transparent);
+            animation: platinumRing 3s ease-in-out infinite alternate;
+        }
+        
+        /* 1 Week Badge - Diamond/Rainbow tier */
+        .badge-1week { 
+            background: linear-gradient(135deg, 
+                #000428 0%, #004e92 8%, #009ffd 16%, #00d4ff 24%, 
+                #5de0e6 32%, #004e92 40%, #8000ff 48%, #d946ef 56%, 
+                #f97316 64%, #eab308 72%, #22c55e 80%, #06b6d4 88%, 
+                #6366f1 96%, #000428 100%);
+            box-shadow: 
+                0 0 40px rgba(0, 212, 255, 0.8),
+                0 0 80px rgba(157, 23, 77, 0.6),
+                0 0 120px rgba(234, 179, 8, 0.4),
+                0 0 160px rgba(34, 197, 94, 0.3);
+            animation: diamondMajesty 1.5s ease-in-out infinite alternate;
+        }
+        
+        .badge-1week::after {
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            right: 1px;
+            bottom: 1px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, 
+                rgba(0, 212, 255, 0.8), rgba(157, 23, 77, 0.6), 
+                rgba(234, 179, 8, 0.7), rgba(34, 197, 94, 0.6),
+                rgba(99, 102, 241, 0.8), rgba(0, 212, 255, 0.8));
+            animation: diamondPrism 3s linear infinite;
+        }
+        
+        .badge-1week::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, 
+                transparent, rgba(0, 212, 255, 0.6), transparent, 
+                rgba(157, 23, 77, 0.4), transparent, rgba(234, 179, 8, 0.5),
+                transparent, rgba(34, 197, 94, 0.4), transparent);
+            animation: diamondHalo 2s ease-in-out infinite alternate;
+        }
+        
+        .badge-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .badge-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 5px 0 0 0;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            background: linear-gradient(45deg, #00ffff, #0080ff, #8000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+        
+        .hologram-icon {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.8));
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+        
+        /* Enhanced icons for higher tiers */
+        .badge-3hour .hologram-icon {
+            filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.9));
+            animation: iconFloat 3s ease-in-out infinite, bronzeIconGlow 3s ease-in-out infinite alternate;
+        }
+        
+        .badge-6hour .hologram-icon {
+            filter: drop-shadow(0 0 14px rgba(192, 192, 192, 1));
+            animation: iconFloat 3s ease-in-out infinite, silverIconPulse 2.5s ease-in-out infinite alternate;
+        }
+        
+        .badge-9hour .hologram-icon {
+            filter: drop-shadow(0 0 15px rgba(49, 130, 206, 1));
+            animation: iconFloat 3s ease-in-out infinite, goldIconRadiance 2s ease-in-out infinite alternate;
+        }
+        
+        .badge-24hour .hologram-icon {
+            filter: drop-shadow(0 0 18px rgba(66, 153, 225, 1));
+            animation: iconFloat 3s ease-in-out infinite, platinumIconAura 1.8s ease-in-out infinite alternate;
+        }
+        
+        .badge-1week .hologram-icon {
+            filter: drop-shadow(0 0 25px rgba(0, 212, 255, 1));
+            animation: iconFloat 3s ease-in-out infinite, diamondIconSpectrum 1.5s ease-in-out infinite alternate;
+        }
+        
+        /* Enhanced titles for higher tiers */
+        .badge-3hour .badge-title {
+            background: linear-gradient(45deg, #ffd700, #ffed4a, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+        }
+        
+        .badge-6hour .badge-title {
+            background: linear-gradient(45deg, #e6e6e6, #f0f0f0, #d3d3d3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 15px rgba(230, 230, 230, 0.9);
+        }
+        
+        .badge-9hour .badge-title {
+            background: linear-gradient(45deg, #446380, #000000);
+            -webkit-background-clip: text;
+             background-clip: text;
+        }
+        
+        .badge-24hour .badge-title {
+            background: linear-gradient(45deg, #114066, #00365d, #004875);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .badge-1week .badge-title {
+            background: linear-gradient(45deg, #00d4ff, #d946ef, #eab308, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: diamondTextSpectrum 2s ease-in-out infinite alternate;
+        }
+        
+        /* Animations */
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 30px rgba(0, 255, 255, 0.5); }
+            100% { text-shadow: 0 0 50px rgba(255, 0, 255, 0.8); }
+        }
+        
+        @keyframes subtitlePulse {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.8); }
+            100% { text-shadow: 0 0 20px rgba(0, 255, 255, 1); }
+        }
+        
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        @keyframes bronzeGlow {
+            0% { box-shadow: 0 0 35px rgba(139, 69, 19, 0.8); }
+            100% { box-shadow: 0 0 50px rgba(139, 69, 19, 1); }
+        }
+        
+        @keyframes silverPulse {
+            0% { box-shadow: 0 0 45px rgba(192, 192, 192, 0.8); }
+            100% { box-shadow: 0 0 65px rgba(192, 192, 192, 1); }
+        }
+        
+        @keyframes silverShimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes goldRadiance {
+            0% { box-shadow: 0 0 50px rgba(49, 130, 206, 0.8); }
+            100% { box-shadow: 0 0 70px rgba(49, 130, 206, 1); }
+        }
+        
+        @keyframes goldSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes platinumAura {
+            0% { box-shadow: 0 0 60px rgba(66, 153, 225, 0.9), 0 0 100px rgba(99, 179, 237, 0.5); }
+            100% { box-shadow: 0 0 80px rgba(66, 153, 225, 1), 0 0 120px rgba(99, 179, 237, 0.7); }
+        }
+        
+        @keyframes platinumWhirl {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes platinumRing {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        @keyframes diamondMajesty {
+            0% { 
+                box-shadow: 
+                    0 0 40px rgba(0, 212, 255, 0.8),
+                    0 0 80px rgba(157, 23, 77, 0.6),
+                    0 0 120px rgba(234, 179, 8, 0.4),
+                    0 0 160px rgba(34, 197, 94, 0.3);
+            }
+            100% { 
+                box-shadow: 
+                    0 0 60px rgba(0, 212, 255, 1),
+                    0 0 100px rgba(157, 23, 77, 0.8),
+                    0 0 140px rgba(234, 179, 8, 0.6),
+                    0 0 180px rgba(34, 197, 94, 0.5);
+            }
+        }
+        
+        @keyframes diamondPrism {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes diamondHalo {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+            100% { transform: scale(1.2) rotate(180deg); opacity: 0.9; }
+        }
+        
+        @keyframes diamondTextSpectrum {
+            0% { 
+                background: linear-gradient(45deg, #00d4ff, #d946ef, #eab308, #22c55e);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            100% { 
+                background: linear-gradient(45deg, #22c55e, #00d4ff, #d946ef, #eab308);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        }
+        
+        @keyframes bronzeIconGlow {
+            0% { filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.9)); }
+            100% { filter: drop-shadow(0 0 18px rgba(255, 215, 0, 1)); }
+        }
+        
+        @keyframes silverIconPulse {
+            0% { filter: drop-shadow(0 0 14px rgba(192, 192, 192, 1)); }
+            100% { filter: drop-shadow(0 0 20px rgba(192, 192, 192, 1)); }
+        }
+        
+        @keyframes goldIconRadiance {
+            0% { filter: drop-shadow(0 0 15px rgba(49, 130, 206, 1)); }
+            100% { filter: drop-shadow(0 0 22px rgba(49, 130, 206, 1)); }
+        }
+        
+        @keyframes platinumIconAura {
+            0% { filter: drop-shadow(0 0 18px rgba(66, 153, 225, 1)); }
+            100% { filter: drop-shadow(0 0 25px rgba(66, 153, 225, 1)); }
+        }
+        
+        @keyframes diamondIconSpectrum {
+            0% { filter: drop-shadow(0 0 25px rgba(0, 212, 255, 1)); }
+            100% { filter: drop-shadow(0 0 35px rgba(157, 23, 77, 1)); }
+        }.badge.not-achieved {
+  filter: grayscale(100%) brightness(0.5);
+  opacity: 0.5;
+  cursor: not-allowed;
+  position: relative;
+}
+
+/* Optional: add lock icon */
+.badge.not-achieved::after {
+  content: "🔒";
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 1rem;
+  color: #ccc;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-info">
+                <div class="avatar">
+                    R
+                </div>
+                <div class="user-details">
+                    <h1>@rafaelyfvhughparradev</h1>
+                    <div class="user-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Joined</div>
+                            <div class="meta-value">Jul 04, 2025</div>
+                        </div>
+                        <div class="meta-item tier-premium">
+                            <div class="meta-label">Tier</div>
+                            <div class="meta-value">Premium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streak Display -->
+            <div class="streak-display">
+                <div class="streak-number">15</div>
+                <div class="streak-label">Day Streak 🔥</div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">2h 34m</div>
+                    <div class="stat-label">Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">5h 12m</div>
+                    <div class="stat-label">This Week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">23h</div>
+                    <div class="stat-label">This Month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">234h</div>
+                    <div class="stat-label">Lifetime</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Profile Badges -->
+            <div class="content-section">
+                <div class="section-title">
+                    <div class="section-icon">🏆</div>
+                    Profile Badges
+                </div>
+               <div class="badges-grid">
+            <div class="badge-item">
+                <div class="badge-container">
+                     <div class="badge badge-1min">
+                        <div class="badge-content">
+                            <div class="watch-time-label">WATCH TIME</div>
+
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" stroke="#00ccff" stroke-width="1.5"/>
+                                <path d="M12 6v6l4 2" stroke="#00ffff" stroke-width="2"/>
+                            </svg>
+                            <div class="badge-title">1 MINUTE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                     <div class="badge badge-3hour not-achieved">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" stroke="#8b4513cc" stroke-width="1.5"/>
+                                <path d="M12 6v6l4 2" stroke="#8b4513cc" stroke-width="2"/>
+                            </svg>
+                            <div class="badge-title">30 MINUTES</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                     <div class="badge badge-6hour not-achieved">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" stroke="#c0c0c0cc" stroke-width="1.5"/>
+                                <path d="M12 6v6l4 2" stroke="#c0c0c0cc" stroke-width="2"/>
+                            </svg>
+                            <div class="badge-title">1 HOUR</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                     <div class="badge badge-9hour not-achieved">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#3182ce"/>
+                                <circle cx="12" cy="12" r="3" stroke="#4299e1"/>
+                            </svg>
+                            <div class="badge-title">10 HOURS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                     <div class="badge badge-24hour not-achieved">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#4299e1"/>
+                                <circle cx="12" cy="12" r="3" stroke="#63b3ed"/>
+                                <path d="M9 12l2 2 4-4" stroke="#90cdf4"/>
+                            </svg>
+                            <div class="badge-title">24 HOURS<br>ELITE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="badge-item">
+                <div class="badge-container">
+                     <div class="badge badge-1week not-achieved">
+                        <div class="badge-content">
+                            <svg class="hologram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L22 8.5v7L12 22 2 15.5v-7L12 2z" stroke="#00d4ff"/>
+                                <path d="M12 2v20" stroke="#d946ef"/>
+                                <path d="M22 8.5l-10 5.5L2 8.5" stroke="#eab308"/>
+                                <circle cx="12" cy="12" r="2" stroke="#22c55e"/>
+                            </svg>
+                            <div class="badge-title">1 WEEK<br>LEGEND</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+
+            <!-- Completed Tasks -->
+            <div class="content-section">
+                <div class="section-title">
+                    <div class="section-icon">✅</div>
+                    Completed Tasks
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox">✓</div>
+                    <div class="task-text">Watch 5 videos today</div>
+                    <div class="task-reward">+10 XP</div>
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox">✓</div>
+                    <div class="task-text">Daily login streak</div>
+                    <div class="task-reward">+5 XP</div>
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox">✓</div>
+                    <div class="task-text">Rate 3 videos</div>
+                    <div class="task-reward">+15 XP</div>
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox">✓</div>
+                    <div class="task-text">Share a playlist</div>
+                    <div class="task-reward">+20 XP</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Watch History -->
+        <div class="content-section" style="margin-top: 24px;">
+            <div class="section-title">
+                <div class="section-icon">📺</div>
+                Watch History
+            </div>
+            <div class="history-item">
+                <div class="history-title">Introduction to Machine Learning</div>
+                <div class="history-meta">
+                    <span>Duration: 1:30:49</span>
+                    <span>2 hours ago</span>
+                </div>
+            </div>
+            <div class="history-item">
+                <div class="history-title">Advanced JavaScript Concepts</div>
+                <div class="history-meta">
+                    <span>Duration: 45:22</span>
+                    <span>1 day ago</span>
+                </div>
+            </div>
+            <div class="history-item">
+                <div class="history-title">React Hooks Deep Dive</div>
+                <div class="history-meta">
+                    <span>Duration: 1:15:30</span>
+                    <span>2 days ago</span>
+                </div>
+            </div>
+            <div class="history-item">
+                <div class="history-title">CSS Grid vs Flexbox</div>
+                <div class="history-meta">
+                    <span>Duration: 32:15</span>
+                    <span>3 days ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

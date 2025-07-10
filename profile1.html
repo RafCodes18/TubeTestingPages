@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - TubeStream</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .profile-header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 24px;
+            z-index: -1;
+            opacity: 0.3;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .user-details h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-meta {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .meta-label {
+            color: #a0a0a0;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .tier-premium {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .badge:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .badge-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .badge-name {
+            font-size: 0.8rem;
+            color: #a0a0a0;
+        }
+
+        .badge-earned {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            color: white;
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .history-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .history-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #a0a0a0;
+            font-size: 0.8rem;
+        }
+
+        .task-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            background: #4ecdc4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .task-text {
+            flex: 1;
+            color: #ffffff;
+        }
+
+        .task-reward {
+            color: #4ecdc4;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .streak-display {
+            text-align: center;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .streak-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .streak-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .profile-header {
+                padding: 20px;
+            }
+
+            .profile-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 16px;
+            }
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 40px;
+            }
+
+            .user-details h1 {
+                font-size: 2rem;
+            }
+
+            .user-meta {
+                justify-content: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .streak-number {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .badge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-info">
+                <div class="avatar">
+                    R
+                </div>
+                <div class="user-details">
+                    <h1>@rafaelyfvhughparradev</h1>
+                    <div class="user-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Joined</div>
+                            <div class="meta-value">Jul 04, 2025</div>
+                        </div>
+                        <div class="meta-item tier-premium">
+                            <div class="meta-label">Tier</div>
+                            <div class="meta-value">Premium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streak Display -->
+            <div class="streak-display">
+                <div class="streak-number">15</div>
+                <div class="streak-label">Day Streak 🔥</div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">2h 34m</div>
+                    <div class="stat-label">Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">5h 12m</div>
+                    <div class="stat-label">This Week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">23h</div>
+                    <div class="stat-label">This Month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">234h</div>
+                    <div class="stat-label">Lifetime</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Profile Badges -->
+            <div class="content-section">
+                <div class="section-title">
+                    <div class="section-icon">🏆</div>
+                    Profile Badges
+                </div>
+                <div class="badge-grid">
+                    <div class="badge badge-earned">
+                        <div class="badge-icon">⏱️</div>
+                        <div class="badge-name">1 Minute</div>
+                    </div>
+                    <div class="badge badge-earned">
+                        <div class="badge-icon">⏰</div>
+                        <div class="badge-name">1 Hour</div>
+                    </div>
+                    <div class="badge badge-earned">
+                        <div class="badge-icon">🎯</div>
+                        <div class="badge-name">Daily User</div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">👑</div>
+                        <div class="badge-name">VIP</div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">💎</div>
+                        <div class="badge-name">Premium</div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">🌟</div>
+                        <div class="badge-name">Expert</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Tasks -->
+            <div class="content-section">
+                <div class="section-title">
+                    <div class="section-icon">✅</div>
+                    Completed Tasks
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox">✓</div>
+                    <div class="task-text">Watch 5 videos today</div>
+                    <div class="task-reward">+10 XP</div>
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox">✓</div>
+                    <div class="task-text">Daily login streak</div>
+                    <div class="task-reward">+5 XP</div>
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox">✓</div>
+                    <div class="task-text">Rate 3 videos</div>
+                    <div class="task-reward">+15 XP</div>
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox">✓</div>
+                    <div class="task-text">Share a playlist</div>
+                    <div class="task-reward">+20 XP</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Watch History -->
+        <div class="content-section" style="margin-top: 24px;">
+            <div class="section-title">
+                <div class="section-icon">📺</div>
+                Watch History
+            </div>
+            <div class="history-item">
+                <div class="history-title">Introduction to Machine Learning</div>
+                <div class="history-meta">
+                    <span>Duration: 1:30:49</span>
+                    <span>2 hours ago</span>
+                </div>
+            </div>
+            <div class="history-item">
+                <div class="history-title">Advanced JavaScript Concepts</div>
+                <div class="history-meta">
+                    <span>Duration: 45:22</span>
+                    <span>1 day ago</span>
+                </div>
+            </div>
+            <div class="history-item">
+                <div class="history-title">React Hooks Deep Dive</div>
+                <div class="history-meta">
+                    <span>Duration: 1:15:30</span>
+                    <span>2 days ago</span>
+                </div>
+            </div>
+            <div class="history-item">
+                <div class="history-title">CSS Grid vs Flexbox</div>
+                <div class="history-meta">
+                    <span>Duration: 32:15</span>
+                    <span>3 days ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
