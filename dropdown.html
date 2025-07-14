@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Dropdown Menu</title>
+    <style>
+        /* CSS Variables */
+        :root {
+            --text-color: #000;
+            --background-color: #000;
+            --primary-color: #7fff00;
+            --primary-color-hover: rgba(191, 255, 0, .7);
+            --primary-color-card-hover: rgba(291, 255, 200, .1);
+            --secondary-color: #262727;
+            --accent-color: #97a7b3;
+            --primary-color-dark: rgba(24, 30, 0, 1);
+            --join-now-hover: #6bdd00;
+            --btn-hover-shadow: 0 5px 15px rgba(119, 255, 0, 0.35), 0 0 8px rgba(55, 148, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(127, 255, 0, 0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(127, 255, 0, 0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(127, 255, 0, 0.02) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(38, 39, 39, 0.15);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(127, 255, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(127, 255, 0, 0.5);
+        }
+
+        /* User Menu Container */
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Username Button */
+        .username-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.2rem;
+            background: rgba(127, 255, 0, 0.1);
+            border: 1px solid rgba(127, 255, 0, 0.2);
+            border-radius: 25px;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .username-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(127, 255, 0, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .username-btn:hover::before {
+            left: 100%;
+        }
+
+        .username-btn:hover {
+            background: rgba(127, 255, 0, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: var(--btn-hover-shadow);
+            transform: translateY(-2px);
+        }
+
+        .username-btn::after {
+            content: '▼';
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        .user-menu:hover .username-btn::after {
+            transform: rotate(180deg);
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 15px);
+            right: 0;
+            min-width: 220px;
+            background: rgba(38, 39, 39, 0.95);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(127, 255, 0, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(127, 255, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            z-index: 1001;
+        }
+
+        /* Dropdown glow effect */
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                rgba(127, 255, 0, 0.3) 0%, 
+                rgba(127, 255, 0, 0.1) 25%, 
+                transparent 50%, 
+                rgba(127, 255, 0, 0.1) 75%, 
+                rgba(127, 255, 0, 0.3) 100%);
+            border-radius: 18px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .user-menu:hover .dropdown-menu::before {
+            opacity: 1;
+        }
+
+        /* Show dropdown on hover */
+        .user-menu:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Dropdown items */
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 1.2rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dropdown-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(127, 255, 0, 0.1), 
+                transparent);
+            transition: left 0.5s ease;
+        }
+
+        .dropdown-item:hover::before {
+            left: 100%;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(127, 255, 0, 0.08);
+            color: var(--primary-color);
+            transform: translateX(5px);
+            box-shadow: inset 3px 0 0 var(--primary-color);
+        }
+
+        /* Icons */
+        .dropdown-item .icon {
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 5px rgba(127, 255, 0, 0.3));
+        }
+
+        .dropdown-item:hover .icon {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 10px rgba(127, 255, 0, 0.6));
+        }
+
+        /* Special styling for logout */
+        .dropdown-item.logout {
+            border-top: 1px solid rgba(127, 255, 0, 0.1);
+            color: #ff6b6b;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-item.logout:hover {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff8a8a;
+            box-shadow: inset 3px 0 0 #ff6b6b;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+            }
+            
+            .dropdown-menu {
+                right: -10px;
+                min-width: 200px;
+            }
+            
+            .username-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Demo content */
+        .demo-content {
+            margin-top: 100px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .demo-content h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(127, 255, 0, 0.5);
+        }
+
+        .demo-content p {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--join-now-hover);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">NEXUS</div>
+        
+        <!-- User Menu -->
+        <div class="user-menu">
+            <div class="username-btn">
+                <span>@jmoneySHH</span>
+            </div>
+            
+            <!-- Dropdown Menu -->
+            <div class="dropdown-menu">
+                <a href="#" class="dropdown-item">
+                    <span class="icon">👤</span>
+                    <span>Profile</span>
+                </a>
+                
+                <a href="#" class="dropdown-item">
+                    <span class="icon">⭐</span>
+                    <span>Favorites</span>
+                </a>
+                
+                <a href="#" class="dropdown-item">
+                    <span class="icon">⚙️</span>
+                    <span>Manage Account</span>
+                </a>
+                
+                <a href="#" class="dropdown-item">
+                    <span class="icon">🔧</span>
+                    <span>Settings</span>
+                </a>
+                
+                <a href="#" class="dropdown-item logout">
+                    <span class="icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Demo Content -->
+    <div class="demo-content">
+        <h1>Futuristic Dropdown Menu</h1>
+        <p>Hover over the username in the top-right corner to see the ultra-modern dropdown menu in action. Experience the smooth animations, glassmorphism effects, and futuristic design.</p>
+    </div>
+</body>
+</html>
